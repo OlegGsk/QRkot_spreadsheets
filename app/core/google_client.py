@@ -1,4 +1,4 @@
-from aiogoogle import Aiogoogle
+from aiogoogle.client import Aiogoogle
 from aiogoogle.auth.creds import ServiceAccountCreds
 
 from app.core.config import settings

@@ -1,4 +1,4 @@
-from aiogoogle import Aiogoogle
+from aiogoogle.client import Aiogoogle
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
