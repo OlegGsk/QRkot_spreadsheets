@@ -28,15 +28,13 @@ class CRUDCharityProject(CRUDBase):
         return project_id
 
     async def get_projects_by_completion_rate(self, session: AsyncSession):
+
         projects = await session.execute(
-            select([self.model.name,
-                    (func.julianday(self.model.close_date) -
-                     func.julianday(self.model.create_date)
-                     ).label('collection_period'),
+            select([self.model.name, self.model.collection_period,
                     self.model.description]).where(
                 self.model.fully_invested
             ).order_by(
-                'collection_period'
+                self.model.collection_period
             ))
 
         projects = projects.all()
