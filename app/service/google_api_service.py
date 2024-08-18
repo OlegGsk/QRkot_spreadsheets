@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from aiogoogle.client import Aiogoogle
 
-from app.core.constants import (PERMISSIONS_BODY, SPREADSHEET_BODY,
+from app.core.constants import (FORMAT, PERMISSIONS_BODY, SPREADSHEET_BODY,
                                 TABLE_VALUES, UPDATE_BODY)
 
 
@@ -33,6 +35,9 @@ async def spreadsheets_update_value(
         projects: list,
         wrapper_services: Aiogoogle
 ) -> None:
+
+    now_date_time = datetime.now().strftime(FORMAT)
+    TABLE_VALUES[0][1] = now_date_time
 
     service = await wrapper_services.discover('sheets', 'v4')
 

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from app.core.config import settings
 
 FORMAT = '%Y/%m/%d %H:%M:%S'
@@ -25,10 +23,9 @@ PERMISSIONS_BODY = {'type': 'user',
                     'role': 'writer',
                     'emailAddress': settings.email}
 
-NOW_DATE_TIME = datetime.now().strftime(FORMAT)
 
 TABLE_VALUES = [
-    ['Отчёт от', NOW_DATE_TIME],
+    ['Отчёт от', None],
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание']]
 
