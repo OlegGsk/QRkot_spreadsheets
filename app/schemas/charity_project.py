@@ -3,8 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, validator
 
-from app.core.constants import (MAX_LEN_NAME_PROJECT,
-                                MAX_LEN_DESCRIPTION_PROJECT,
+from app.core.constants import (MAX_LEN_DESCRIPTION_PROJECT,
+                                MAX_LEN_NAME_PROJECT,
                                 MIN_LEN_DESCRIPTION_PROJECT)
 from app.schemas.base import PositiveInt
 

@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from sqlalchemy import Boolean, Column, DateTime, Integer, func
 from sqlalchemy.ext.hybrid import hybrid_property
+
 from app.core.db import Base
 
 
