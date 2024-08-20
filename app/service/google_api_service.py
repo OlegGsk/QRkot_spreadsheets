@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from aiogoogle.client import Aiogoogle
-
+from aiogoogle.excs import HTTPError
 from app.core.constants import (FORMAT, PERMISSIONS_BODY, SPREADSHEET_BODY,
                                 TABLE_VALUES, UPDATE_BODY)
 
@@ -54,3 +54,42 @@ async def spreadsheets_update_value(
             json=UPDATE_BODY
         )
     )
+
+
+async def get_all_files(
+        wrapper_services: Aiogoogle):
+
+    service = await wrapper_services.discover('drive', 'v3')
+
+    response = await wrapper_services.as_service_account(
+        service.files.list(q="mimeType='application/vnd.google-apps.spreadsheet'")
+    )
+    all_files = [{'id': file.get('id'), 'name': file.get('name')} for file in response.get('files')]
+    total = len(all_files)
+    all_files.append({'total': total})
+    return all_files
+
+
+async def get_sheet_by_id(
+        spreadsheet_id: str,
+        wrapper_services: Aiogoogle):
+    service = await wrapper_services.discover('sheets', 'v4')
+    try:
+        sheet = await wrapper_services.as_service_account(
+            service.spreadsheets.values.get(spreadsheetId=spreadsheet_id,
+                                            range='A1:E30'))
+    except HTTPError:
+        return f'{spreadsheet_id} не существует'
+    return sheet.get('values')
+
+
+async def remove_sheet_by_id(
+        spreadsheet_id: str,
+        wrapper_services: Aiogoogle):
+    service = await wrapper_services.discover('drive', 'v3')
+    try:
+        await wrapper_services.as_service_account(
+            service.files.delete(fileId=spreadsheet_id,)
+        )
+    except Exception:
+        return f'{spreadsheet_id} не существует'
