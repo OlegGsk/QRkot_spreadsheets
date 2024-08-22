@@ -77,7 +77,7 @@ async def get_sheet_by_id(
     try:
         sheet = await wrapper_services.as_service_account(
             service.spreadsheets.values.get(spreadsheetId=spreadsheet_id,
-                                            range='A1:E30'))
+                                            range='A1:K30'))
     except HTTPError:
         return f'{spreadsheet_id} не существует'
     return sheet.get('values')
