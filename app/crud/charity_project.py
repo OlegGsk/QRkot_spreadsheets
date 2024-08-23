@@ -1,11 +1,11 @@
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
 from app.models import CharityProject
-
+from app.core.constants import FORMAT
 
 class CRUDCharityProject(CRUDBase):
     async def get_project_id_by_name(
@@ -29,14 +29,22 @@ class CRUDCharityProject(CRUDBase):
 
     async def get_projects_by_completion_rate(self, session: AsyncSession):
 
+        # projects = await session.execute(
+        #     select([self.model.name, self.model.collection_period,
+        #             self.model.description]).where(
+        #         self.model.fully_invested
+        #     ).order_by(
+        #         self.model.collection_period
+        #     ))
         projects = await session.execute(
-            select([self.model.name, self.model.collection_period,
+            select([self.model.name,
+                    (self.model.close_date - self.model.create_date).label("collection_period"),
                     self.model.description]).where(
                 self.model.fully_invested
             ).order_by(
-                self.model.collection_period
-            ))
-
+                'collection_period'
+            )
+        )
         projects = projects.all()
 
         return projects

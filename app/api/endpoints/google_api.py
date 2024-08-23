@@ -19,8 +19,8 @@ router = APIRouter()
 
 
 @router.post('/',
-             dependencies=[Depends(current_superuser)],
-             response_model=list[dict])
+             dependencies=[Depends(current_superuser)],)
+            #  response_model=list[dict])
 async def get_projects(
         session: AsyncSession = Depends(get_async_session),
         wrapper_services: Aiogoogle = Depends(get_service)
@@ -28,12 +28,12 @@ async def get_projects(
     projects = await charity_project_crud.get_projects_by_completion_rate(
         session)
 
-    spreadsheet_id = await spreadsheets_create(wrapper_services)
+    # spreadsheet_id = await spreadsheets_create(wrapper_services)
 
-    await set_user_permissions(spreadsheet_id, wrapper_services)
-    await spreadsheets_update_value(spreadsheet_id,
-                                    projects,
-                                    wrapper_services)
+    # await set_user_permissions(spreadsheet_id, wrapper_services)
+    # await spreadsheets_update_value(spreadsheet_id,
+    #                                 projects,
+    #                                 wrapper_services)
     return projects
 
 
