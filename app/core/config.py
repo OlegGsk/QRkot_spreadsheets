@@ -1,12 +1,18 @@
 from typing import Optional
-
+from dotenv import load_dotenv
 from pydantic import BaseSettings, EmailStr
+import os
+load_dotenv('.env')
+
+POSTGRES_DB = os.environ.get('POSTGRES_DB')
+POSTGRES_USER = os.environ.get('POSTGRES_USER')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 
 
 class Settings(BaseSettings):
     app_title: str = 'Фонд поддержки котиков'
     description: str = 'Фонд собирает пожертвования'
-    database_url: Optional[str] = None
+    database_url: str = 'postgresql+asyncpg://postgres:postgres@localhost:5432/charitable_foundation'
     secret: str = 'SECRET'
     first_superuser_email: Optional[EmailStr] = None
     first_superuser_password: Optional[str] = None
@@ -21,9 +27,6 @@ class Settings(BaseSettings):
     auth_provider_x509_cert_url: Optional[str] = None
     client_x509_cert_url: Optional[str] = None
     email: Optional[str] = None
-    POSTGRES_DB: Optional[str] = None
-    POSTGRES_USER: Optional[str] = None
-    POSTGRES_PASSWORD: Optional[str] = None
 
     class Config:
         env_file = '.env'
