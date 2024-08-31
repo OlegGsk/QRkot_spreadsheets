@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import and_, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import CharityProject, Donation, User
@@ -77,12 +77,9 @@ class CRUDBase:
             self,
             session: AsyncSession
     ) -> Union[list[CharityProject], list[Donation]]:
-        false_value = False
-        none_value = None
         objects = await session.execute(
             select(self.model).
-            where(self.model.fully_invested == false_value,
-                  self.model.close_date == none_value
+            where(self.model.fully_invested.is_(False)
                   ).order_by(self.model.create_date))
 
         objects = objects.scalars().all()
